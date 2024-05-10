@@ -4,7 +4,6 @@ import numpy as np
 from scipy.io.wavfile import write
 import threading
 import openai
-import openai
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.llms import OpenAI
@@ -100,4 +99,4 @@ def process_audio():
     return jsonify({'original':original_text,'summary': result,'bullet_point':bullet_point_text})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
