@@ -7,4 +7,5 @@ pydub
 whisper-timestamped
 flask
 sounddevice
-libportaudio2
+PyAudio
+
