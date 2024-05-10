@@ -1,0 +1,10 @@
+nltk 
+textblob
+langchain
+openai==0.28
+langchain-openai
+langchain_community
+pydub
+whisper-timestamped
+ref
+bullet point: https://blog.csdn.net/FrenzyTechAI/article/details/131524746

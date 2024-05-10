@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Synopsis | 聲音轉文字與摘要</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/all.css">
+</head>
+<body>
+    <div class="wrap">
+        <aside>
+            <h2>歷史記錄</h2>
+            <ul id="historyContainer">
+                <li class="history-block">
+                    <h3 class="history-title">聲音轉文字與摘要</h3>
+                    <p class="duration">05:03</p>
+                </li>
+                <li class="history-block">
+                    <h3 class="history-title">聲音轉文字與摘要</h3>
+                    <p class="duration">05:03</p>
+                </li>
+            </ul>
+        </aside>
+        <main>
+            <h1>Sound Synopsis | 聲音轉文字與摘要</h1>
+            <button id="recordButton"><i class="fa-solid fa-microphone"></i></button>
+            <span id="loader" class="loader hidden"></span>
+            <p class="time">00:00:00</p>
+            <p class="status">停止錄音</p>
+            <div class="results">
+                <h2>原文：</h2>
+                <p id="original">尚無重點原文內容</p>
+                <h2>修飾文字：</h2>
+                <p id="modification">尚無修改文字內容</p>
+                <h2>總結：</h2>
+                <p id="summary">尚無總結內容。</p>
+                <h2>重點總結：</h2>
+                <p id="bullet_point">尚無重點總結內容。</p>
+                
+            </div>
+        </main>
+    </div>
+    <div class="mask hidden"></div>
+    <div class="full-content hidden">
+        <div class="full-content-header">
+            <h3 class="history-title">聲音轉文字與摘要</h3>
+            <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <h4>原文：</h4>
+        <p class="history-original">尚無重點原文內容</p>
+        <h4>修飾文字：</h4>
+        <p class="history-modification">尚無修改文字內容</p>
+        <h4>總結：</h4>
+        <p class="history-summary">尚無總結內容。</p>
+        <h4>重點總結：</h4>
+        <p class="history-bullet_point">尚無重點總結內容。</p>
+    </div>
+    <script src="../static/index.js"></script>
+</body>
+</html>
