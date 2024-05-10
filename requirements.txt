@@ -6,5 +6,3 @@ langchain-openai
 langchain_community
 pydub
 whisper-timestamped
-ref
-bullet point: https://blog.csdn.net/FrenzyTechAI/article/details/131524746
