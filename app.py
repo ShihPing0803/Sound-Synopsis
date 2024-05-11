@@ -7,7 +7,7 @@ import openai
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.llms import OpenAI
-from langchain_openai import OpenAI
+#from langchain_openai import OpenAI
 from langchain import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.mapreduce import MapReduceChain
