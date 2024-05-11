@@ -3,7 +3,6 @@ textblob
 langchain
 openai==0.28
 langchain_community
-langchain-openai
 pydub
 whisper-timestamped
 flask
