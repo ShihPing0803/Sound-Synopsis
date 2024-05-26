@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
 import openai
+import os
+import io
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.llms import OpenAI
