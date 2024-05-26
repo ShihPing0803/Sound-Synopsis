@@ -1,11 +1,6 @@
-nltk 
-textblob
+openai
 langchain
-openai==0.28
 langchain_community
 pydub
-whisper-timestamped
 flask
-sounddevice
-PyAudio
 
