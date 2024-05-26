@@ -11,16 +11,7 @@
     <div class="wrap">
         <aside>
             <h2>歷史記錄</h2>
-            <ul id="historyContainer">
-                <li class="history-block">
-                    <h3 class="history-title">聲音轉文字與摘要</h3>
-                    <p class="duration">05:03</p>
-                </li>
-                <li class="history-block">
-                    <h3 class="history-title">聲音轉文字與摘要</h3>
-                    <p class="duration">05:03</p>
-                </li>
-            </ul>
+            <ul id="historyContainer"></ul>
         </aside>
         <main>
             <h1>Sound Synopsis | 聲音轉文字與摘要</h1>
@@ -28,17 +19,13 @@
             <span id="loader" class="loader hidden"></span>
             <p class="time">00:00:00</p>
             <p class="status">停止錄音</p>
-            <div class="results">
-                <h2>原文：</h2>
-                <p id="original">尚無重點原文內容</p>
-                <h2>修飾文字：</h2>
-                <p id="modification">尚無修改文字內容</p>
-                <h2>總結：</h2>
-                <p id="summary">尚無總結內容。</p>
-                <h2>重點總結：</h2>
-                <p id="bullet_point">尚無重點總結內容。</p>
-                
-            </div>
+            <ul class="results">
+                <li><a href="#" class="tab-original">原文</a></li>
+                <li><a href="#"  class="tab-modify">修飾文字</a></li>
+                <li><a href="#" class="tab-summary">總結</a></li>
+                <li><a href="#" class="tab-bullet">列點總結</a></li>
+            </ul>
+            <p class="content">無內容</p>
         </main>
     </div>
     <div class="mask hidden"></div>
@@ -48,14 +35,15 @@
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <h4>原文：</h4>
-        <p class="history-original">尚無重點原文內容</p>
+        <p class="history-original"></p>
         <h4>修飾文字：</h4>
-        <p class="history-modification">尚無修改文字內容</p>
+        <p class="history-modification"></p>
         <h4>總結：</h4>
-        <p class="history-summary">尚無總結內容。</p>
+        <p class="history-summary"></p>
         <h4>重點總結：</h4>
-        <p class="history-bullet_point">尚無重點總結內容。</p>
+        <p class="history-bullet_point"></p>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
     <script src="../static/index.js"></script>
 </body>
 </html>
