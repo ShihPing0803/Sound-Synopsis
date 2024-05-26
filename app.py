@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-import sounddevice as sd
 import numpy as np
-from scipy.io.wavfile import write
-import threading
 import openai
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
@@ -13,7 +10,6 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.mapreduce import MapReduceChain
 from langchain.docstore.document import Document
 from langchain.chains.summarize import load_summarize_chain
-import whisper_timestamped as whisper
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 app = Flask(__name__)
