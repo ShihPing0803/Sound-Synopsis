@@ -15,88 +15,127 @@ from langchain.docstore.document import Document
 from langchain.chains.summarize import load_summarize_chain
 import whisper_timestamped as whisper
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
 app = Flask(__name__)
 
+client = OpenAI()
 # Global variables
 fs = 44100  # Sample rate
 filename = "output.wav"
 is_recording = False
 
+class NamedBytesIO(io.BytesIO):
+    name = 'transcript.wav'
+    
+def generate_title(text):
+    response = client.chat.completions.create(
+        model ="gpt-4o",
+        messages=[
+            {"role": "system", "content": "依據原文給定標題，以文字的語言為主，標題在十個字以內精簡明瞭。若無原文內容則以無內容表示，結果請以繁體中文"},
+            {"role": "user", "content": text}
+        ],
+        max_tokens=60
+    )
+    print(response)
+    title = response.choices[0].message.content
+    return title
+
 def speech_to_text():
     audio_file_path="./output.wav"
     audio_file= open(audio_file_path, "rb")
-    transcript = openai.Audio.transcribe("whisper-1", audio_file,detect_disfluencies=True)
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
     text = transcript.to_dict()['text']
-    """
-    audio = whisper.load_audio("./output.wav")
 
-    model = whisper.load_model("tiny", device="cpu")
-
-    result = whisper.transcribe(model, audio, language="en", detect_disfluencies=True)
-
-    print(result)
-    """
     return text
 
-def text_summmarization(original_text):
-    llm = OpenAI(temperature=0)
-    text_splitter = CharacterTextSplitter()
-    texts = text_splitter.split_text(original_text)
-    docs = [Document(page_content=t) for t in texts[:3]]
-    chain = load_summarize_chain(llm, chain_type="map_reduce")
-    result=chain.invoke(docs,return_only_outputs=True)
-    return result
+def text_summmarization(modify_text):
+    response = client.chat.completions.create(
+        model ="gpt-4o",
+        messages=[
+            {"role": "system", "content": "依據原文進行摘要，若無原文內容則以無內容表示，結果請以繁體中文"},
+            {"role": "user", "content": modify_text}
+        ]
+    )
+    print(response)
+    summary = response.choices[0].message.content
+    return summary
 
-def bullet_point(original_text):
-    llm = OpenAI(temperature=0)
-    prompt_template = """請列點並分重點總結內容，若無內容則以無內容表示，請勿隨意生成其他不相干內容： {text}
-    分重點說明："""
-    BULLET_POINT_PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
-    text_splitter = CharacterTextSplitter()
-    texts = text_splitter.split_text(original_text)
-    docs = [Document(page_content=t) for t in texts[:3]]
-    chain = load_summarize_chain(llm, chain_type="stuff", prompt=BULLET_POINT_PROMPT)
-    result=chain.invoke(docs,return_only_outputs=True)
-    return result
+def text_modify(original_text):
+    response = client.chat.completions.create(
+        model ="gpt-4o",
+        messages=[
+            {"role": "system", "content": "依據原文加上適當的標點符號，並且去掉冗言贅字，其餘請勿更動員內容，結果請以繁體中文顯示"},
+            {"role": "user", "content": original_text}
+        ]
+    )
+    print(response)
+    summary = response.choices[0].message.content
+    return summary
+
+def bullet_point(modify_text):
+    response = client.chat.completions.create(
+        model ="gpt-4o",
+        messages=[
+            {"role": "system", "content": "依據原文列點說明，若無原文內容則以無內容表示，結果請以繁體中文"},
+            {"role": "user", "content": modify_text}
+        ]
+    )
+    bullet_point = response.choices[0].message.content
+    print(bullet_point)
+    return bullet_point
                    
-def record_audio():
-    global audio_buffer
-    audio_buffer = []
-    while is_recording:
-        chunk = sd.rec(int(1 * fs), samplerate=fs, channels=1, dtype='int16')
-        sd.wait()
-        audio_buffer.append(chunk)
-    recording = np.concatenate(audio_buffer)
-    write(filename, fs, recording)
-    print(f"Recording saved as {filename}")
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/start_recording', methods=['POST'])
-def start_recording():
-    global is_recording, recording_thread
-    if not is_recording:
-        is_recording = True
-        recording_thread = threading.Thread(target=record_audio)
-        recording_thread.start()
-    return 'Recording started.'
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['email']
+        password = request.form['pwd']
+        #user = User.query.filter_by(username=username, password=password).first()
+        if username=='123@gmail.com' and password=='123':
+            return render_template('index.html')
+        else:
+            error_message = '登入失敗，請檢查您的帳號密碼'
+            return render_template('login.html', error_message=error_message)
+    return render_template('login.html')
 
-@app.route('/stop_recording', methods=['POST'])
-def stop_recording():
-    global is_recording
-    if is_recording:
-        is_recording = False
-        recording_thread.join()  # Wait for the recording thread to finish
-    return 'Recording stopped.'
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.json['email']
+        password = request.json['password']
+    try:
+        # 使用 Firebase 驗證用戶
+        user = auth.verify_password(email, password)
+        print(user)
+        return jsonify({"message": "Login successful", "user_id": user.uid}), 200
+    except auth.AuthError as e:
+        return jsonify({"error": str(e)}), 401
 
-@app.route('/process_audio',methods=['POST'])
+@app.route('/process_audio', methods=['POST'])
 def process_audio():
-    original_text=speech_to_text()
-    result=text_summmarization(original_text)["output_text"]
-    bullet_point_text=bullet_point(original_text)["output_text"]
-    return jsonify({'original':original_text,'summary': result,'bullet_point':bullet_point_text})
+    audio_file = request.files['audio']
+    if audio_file:
+        audio_stream = NamedBytesIO(audio_file.read())
+        audio_stream.name = 'transcript.wav' 
+
+        transcript = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_stream,
+            response_format='text'
+        )
+        cc = OpenCC('s2t')
+        text = cc.convert(transcript)
+        title = generate_title(text)
+        modify = text_modify(text)
+        result = text_summmarization(modify)
+        print(result)
+        bullet_point_text = bullet_point(modify)
+        return jsonify({'title': title,'original':text,'modify' : modify,'summary': result,'bullet_point':bullet_point_text})
+    return jsonify({'error': '沒有接收到音訊文件'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
