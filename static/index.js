@@ -1,6 +1,6 @@
 
 const firebaseConfig = {
-    apiKey: secrets.FIREBASE_API_KEY,
+    apiKey: process.env.FIREBASE_API_KEY,
     authDomain: secrets.FIREBASE_AUTH_DOMAIN,
     databaseURL: secrets.FIREBASE_DATABASE_URL,
     projectId: secrets.FIREBASE_PROJECT_ID,
