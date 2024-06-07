@@ -1,6 +1,6 @@
 openai
 langchain
-langchain_community
-pydub
+langchain-community
 flask
-
+scipy
+langchain-openai
