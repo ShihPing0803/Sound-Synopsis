@@ -10,29 +10,43 @@
 <body>
     <div class="wrap">
         <aside>
-            <h2>歷史記錄</h2>
             <ul id="historyContainer"></ul>
+            <div class="button-group">
+                <button class="login-button">登入</button>
+                <button class="logout-button">登出</button>
+            </div>
         </aside>
         <main>
             <h1>Sound Synopsis | 聲音轉文字與摘要</h1>
-            <button id="recordButton"><i class="fa-solid fa-microphone"></i></button>
-            <span id="loader" class="loader hidden"></span>
+            <div class="audio">
+                <button id="recordButton"><i class="fa-solid fa-microphone"></i></button>
+                <span class = "loader"></span>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="fileInput" accept="audio/*" hidden>
+                    <button onclick="document.getElementById('fileInput').click();"><i class="fas fa-file-upload"></i></button>
+                </div>
+            </div>
             <p class="time">00:00:00</p>
             <p class="status">停止錄音</p>
+            <hr>
             <ul class="results">
-                <li><a href="#" class="tab-original">原文</a></li>
+                <li class="original-li"><a href="#" class="tab-original">原文</a></li>
                 <li><a href="#"  class="tab-modify">修飾文字</a></li>
                 <li><a href="#" class="tab-summary">總結</a></li>
                 <li><a href="#" class="tab-bullet">列點總結</a></li>
             </ul>
             <p class="content">無內容</p>
+            <a href="/download_transcript" class="download-doc fas fa-file-download"></a>
         </main>
     </div>
     <div class="mask hidden"></div>
     <div class="full-content hidden">
         <div class="full-content-header">
             <h3 class="history-title">聲音轉文字與摘要</h3>
-            <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="other-functions">
+                <!--<a href="/download_transcript" class="full-download-doc fas fa-file-download"></a>-->
+                <i class="fa-solid fa-xmark close-btn"></i>
+            </div>
         </div>
         <h4>原文：</h4>
         <p class="history-original"></p>
@@ -44,6 +58,6 @@
         <p class="history-bullet_point"></p>
     </div>
     <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
-    <script src="../static/index.js"></script>
+    <script type="module" src="../static/index.js"></script>
 </body>
 </html>
