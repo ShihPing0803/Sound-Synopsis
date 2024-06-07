@@ -6,3 +6,4 @@ scipy
 langchain-openai
 python-docx
 firebase_admin
+azure-cognitiveservices-speech
