@@ -1,76 +1,6 @@
 *, *:before, *:after{
     box-sizing: border-box;
 }
-/*login page & signup page*/
-.login, .signup {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 400px;
-    height: 50%;
-    padding: 50px;
-    background-color: #fff;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.login h1, .signup h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-weight: bold;
-}
-
-.email-area,
-.pwd-area {
-    width:100%;
-    margin-bottom: 20px;
-}
-
-.email-area label,
-.pwd-area label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.email-area input,
-.pwd-area input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-}
-
-.email-area input:focus,
-.pwd-area input:focus {
-    border-color:lightblue;
-    outline: none;
-}
-
-.submit-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #a6d0fd;
-    color:black;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.submit-button:hover {
-    background-color: #0056b3;
-    color:white;
-}
-
-.submit-button:active {
-    background-color: #004d99;
-    color:white;
-}
-/*login page end*/
-
 /*index.html start*/
 .wrap {
     max-width: 1980px;
@@ -78,7 +8,7 @@
     margin: 0;
     display: flex;
     justify-content: space-between;
-    padding:25px;
+    padding:10px;
     height:95vh;
 }
 
@@ -98,8 +28,8 @@ h1 {
     font-size: 25px;
 }
 
-#recordButton {
-    background-color: #4CAF50;
+#recordButton, .file-upload-wrapper button{
+    background-color: hsl(122, 39%, 49%);
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -112,7 +42,7 @@ h1 {
     transition: background-color 0.2s ease;
 }
 
-#recordButton:hover {
+#recordButton:hover, .file-upload-wrapper button:hover {
     background-color: #45A049;
 }
 
@@ -123,9 +53,11 @@ h1 {
 }
 
 aside {
-    width: 25%;
+    width:25%;
     padding-right: 20px;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 aside h2 {
@@ -137,6 +69,8 @@ aside h2 {
 #historyContainer {
     list-style-type: none;
     padding-left: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .history-block {
@@ -158,23 +92,47 @@ aside h2 {
     color: #333333;
     margin: 0 0 8px 0;
 }
-
+.button-group{
+    display: flex;
+    justify-content: space-between;
+}
 .duration {
     color: #888888;
     font-size: 14px;
 }
 
+.audio{
+    display: flex;
+    gap:20px;
+    justify-content: center;
+}
+
 .status {
-    color: #555555;
+    flex-grow: 1; 
+    text-align: center; 
     font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    color: #555;
+    font-weight:bold;
+}
+
+.other-function {
+    display: flex;
+    gap: 10px; 
+}
+
+.download-doc {
+    color: green;
+    cursor: pointer;
+    font-size:20px;
+    position: absolute;
+    bottom:40px;
+    right:40px;
 }
 
 .results {
     margin-top: 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .results li {
@@ -193,6 +151,10 @@ aside h2 {
     border-bottom:2px solid #45A049;
 }
 
+.content{
+    text-align: left;
+    margin-left:40px;
+}
 .active{
     border-bottom:2px solid #45A049;
 }
@@ -227,20 +189,31 @@ aside h2 {
     height:80vh;
     overflow-y: auto;
 }
+.full-download-doc{
+    font-size: 24px;
+    color:darkgray;
+}
+.full-download-doc:hover{
+    cursor: pointer;
+    color: black;
+}
 
 .active{
     display: block;
 }
 
 .hidden{
-    display: none !important;
+    display: none;
 }
 
 .full-content-header{
     display:flex;
     justify-content: space-between;
 }
-
+.other-functions{
+    display: flex;
+    gap:20px;
+}
 .loader {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
@@ -248,7 +221,7 @@ aside h2 {
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
-    display: inline-block;
+    display: none;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -258,4 +231,32 @@ aside h2 {
     100% { transform: rotate(360deg); }
 }
 
+.close-btn{
+    font-size:24px;
+    color:darkgray;
+}
+.close-btn:hover{
+    cursor: pointer;
+    color:black;
+}
+.login-button, .logout-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.login-button:hover, .logout-button:hover {
+    background-color: #4CAF50;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.login-button:focus, .logout-button:focus {
+    outline: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
 /*index.html end*/
