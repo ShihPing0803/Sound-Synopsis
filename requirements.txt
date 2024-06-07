@@ -4,3 +4,4 @@ langchain-community
 flask
 scipy
 langchain-openai
+python-docx
