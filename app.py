@@ -14,6 +14,11 @@ import io
 import math
 from openai import OpenAI
 from opencc import OpenCC
+from werkzeug.utils import secure_filename
+from langchain_core.documents import Document
+from PyPDF2 import PdfReader
+from docx import Document
+from doc2docx import convert
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 app = Flask(__name__)
@@ -26,7 +31,22 @@ is_recording = False
 
 class NamedBytesIO(io.BytesIO):
     name = 'transcript.wav'
-    
+
+def get_text_from_pdf(pdf_path):
+    text = ""
+    with open(pdf_path, 'rb') as file:
+        pdf_reader = PdfReader(file)
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+    return text
+
+def get_text_from_docx(docx_path):
+    doc = Document(docx_path)
+    text = ""
+    for paragraph in doc.paragraphs:
+        text += paragraph.text + "\n"
+    return text
+
 def generate_title(text):
     response = client.chat.completions.create(
         model ="gpt-4o",
@@ -101,10 +121,6 @@ def writeDoc(text, modify, result, bullet_point_text):
 def index():
     return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    return render_template('login.html')
-
 @app.route('/download_transcript', methods = ['GET'])
 def download_transcript():
     filepath = './transcript.docx'
@@ -160,6 +176,46 @@ def process_audio():
 
         return jsonify({'title': title,'original':text,'modify' : modify,'summary': result,'bullet_point':bullet_point_text})
     return jsonify({'error'}), 400
+
+@app.route('/process_text',methods = ['POST'])
+def process_text():
+    transcript = ""
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file_path = os.path.join('./', filename)
+    file.save(file_path)
+    if filename.endswith('.pdf'):
+        transcript += get_text_from_pdf(file_path)
+        print(transcript)
+    elif filename.endswith(".txt"):
+         with open(file_path, 'r', encoding='utf-8') as file:
+            transcript += file.read()
+            print(transcript)
+    elif filename.endswith('.docx'):
+        transcript += get_text_from_docx(file_path)
+        print(transcript)
+    elif filename.endswith('.doc'):
+        output_path = os.path.splitext(file_path)[0] + "_output.docx"
+        if not os.path.exists(output_path):
+            convert(file_path,output_path)
+            os.remove(file_path)
+        transcript += get_text_from_docx(output_path)
+        print(transcript)
+
+    print(transcript)
+    cc = OpenCC('s2t')
+    text = cc.convert(transcript)
+    title = generate_title(text)
+    modify = text_modify(text)
+    result = text_summmarization(modify)
+    bullet_point_text = bullet_point(modify)
+    writeDoc(text, modify, result, bullet_point_text)
+    title = cc.convert(title)
+    modify = cc.convert(modify)
+    result = cc.convert(result)
+    bullet_point_text = cc.convert(bullet_point_text)
+
+    return jsonify({'title': title,'original':text,'modify' : modify,'summary': result,'bullet_point':bullet_point_text})
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost')
