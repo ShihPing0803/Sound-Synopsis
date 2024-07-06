@@ -6,7 +6,7 @@ scipy
 langchain-openai
 python-docx
 firebase_admin
-OpenCC
 PyPDF2
 doc2docx
 gunicorn
+OpenCC
