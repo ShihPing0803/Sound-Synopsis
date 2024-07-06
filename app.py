@@ -169,10 +169,10 @@ def process_audio():
         result = text_summmarization(modify)
         bullet_point_text = bullet_point(modify)
         writeDoc(text, modify, result, bullet_point_text)
-        title = cc.convert(title)
-        modify = cc.convert(modify)
-        result = cc.convert(result)
-        bullet_point_text = cc.convert(bullet_point_text)
+        #title = cc.convert(title)
+        #modify = cc.convert(modify)
+        #result = cc.convert(result)
+        #bullet_point_text = cc.convert(bullet_point_text)
 
         return jsonify({'title': title,'original':text,'modify' : modify,'summary': result,'bullet_point':bullet_point_text})
     return jsonify({'error'}), 400
@@ -203,17 +203,18 @@ def process_text():
         print(transcript)
 
     print(transcript)
-    cc = OpenCC('s2t')
-    text = cc.convert(transcript)
+    #cc = OpenCC('s2t')
+    #text = cc.convert(transcript)
+    text = transcript
     title = generate_title(text)
     modify = text_modify(text)
     result = text_summmarization(modify)
     bullet_point_text = bullet_point(modify)
     writeDoc(text, modify, result, bullet_point_text)
-    title = cc.convert(title)
-    modify = cc.convert(modify)
-    result = cc.convert(result)
-    bullet_point_text = cc.convert(bullet_point_text)
+    #title = cc.convert(title)
+    #modify = cc.convert(modify)
+    #result = cc.convert(result)
+    #bullet_point_text = cc.convert(bullet_point_text)
 
     return jsonify({'title': title,'original':text,'modify' : modify,'summary': result,'bullet_point':bullet_point_text})
 
