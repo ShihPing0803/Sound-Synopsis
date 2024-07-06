@@ -161,8 +161,9 @@ def process_audio():
                 response_format='text'
             )
 
-        cc = OpenCC('s2t')
-        text = cc.convert(transcript)
+        #cc = OpenCC('s2t')
+        #text = cc.convert(transcript)
+        text = transcript
         title = generate_title(text)
         modify = text_modify(text)
         result = text_summmarization(modify)
