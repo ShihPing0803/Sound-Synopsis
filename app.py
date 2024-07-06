@@ -12,7 +12,7 @@ from io import BytesIO
 import io
 import math
 from openai import OpenAI
-from opencc import OpenCC
+#from opencc import OpenCC
 from werkzeug.utils import secure_filename
 from langchain_core.documents import Document
 from PyPDF2 import PdfReader
