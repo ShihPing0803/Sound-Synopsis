@@ -6,7 +6,6 @@ scipy
 langchain-openai
 python-docx
 firebase_admin
-azure-cognitiveservices-speech
 OpenCC
 PyPDF2
 doc2docx
