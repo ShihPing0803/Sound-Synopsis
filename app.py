@@ -8,7 +8,6 @@ from langchain import OpenAI
 import os
 import firebase_admin
 from firebase_admin import credentials, auth
-import azure.cognitiveservices.speech as speechsdk
 from io import BytesIO
 import io
 import math
